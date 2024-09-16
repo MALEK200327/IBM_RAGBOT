@@ -1,0 +1,310 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Recommendation API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://coherent-possibly-jay.ngrok-free.app",
+      "description": "Primary production server"
+    }
+  ],
+  "paths": {
+    "/recommend": {
+      "post": {
+        "summary": "Collect 5 answers for (not sure) and provide a recommendation",
+        "description": "This endpoint collects five answers from the user and provides a single text-based recommendation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ans1": {
+                    "type": "string",
+                    "example": "Option A"
+                  },
+                  "ans2": {
+                    "type": "string",
+                    "example": "Option B"
+                  },
+                  "ans3": {
+                    "type": "string",
+                    "example": "Option C"
+                  },
+                  "ans4": {
+                    "type": "string",
+                    "example": "Option D"
+                  },
+                  "ans5": {
+                    "type": "string",
+                    "example": "Option E"
+                  }
+                },
+                "required": ["ans1", "ans2", "ans3", "ans4", "ans5"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A simple text response based on the answers provided, along with detailed results and timestamp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "The simple text response",
+                      "example": "Introduction to Generative AI in Action"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time of the response",
+                      "example": "2024-04-24T12:31:55Z"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "generated_text": {
+                            "type": "string",
+                            "description": "A snippet of generated text",
+                            "example": "Sample generated text"
+                          },
+                          "generated_token_count": {
+                            "type": "integer",
+                            "description": "The number of tokens in the generated text",
+                            "example": 30
+                          },
+                          "input_token_count": {
+                            "type": "integer",
+                            "description": "The number of tokens in the input",
+                            "example": 15
+                          }
+                        }
+                      },
+                      "description": "Detailed results of the operation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+              "description": "Bad request if the data provided is invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message detailing what was wrong with the input",
+                        "example": "Missing required field 'ans1'"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/recommend_more": {
+      "post": {
+        "summary": "Collect 3 answers for (further recommendation) and provide a recommendation",
+        "description": "This endpoint collects three answers from the user and provides a single text-based recommendation.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ans1": {
+                    "type": "string",
+                    "example": "Option X"
+                  },
+                  "ans2": {
+                    "type": "string",
+                    "example": "Option Y"
+                  },
+                  "ans3": {
+                    "type": "string",
+                    "example": "Option Z"
+                  }
+                },
+                "required": ["ans1", "ans2", "ans3"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "A simple text response based on the answers provided, along with detailed results and timestamp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "The simple text response",
+                      "example": "Introduction to Quantum Computing"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time of the response",
+                      "example": "2024-04-24T12:31:55Z"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "generated_text": {
+                            "type": "string",
+                            "description": "A snippet of generated text",
+                            "example": "Sample generated text"
+                          },
+                          "generated_token_count": {
+                            "type": "integer",
+                            "description": "The number of tokens in the generated text",
+                            "example": 30
+                          },
+                          "input_token_count": {
+                            "type": "integer",
+                            "description": "The number of tokens in the input",
+                            "example": 15
+                          }
+                        }
+                      },
+                      "description": "Detailed results of the operation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+              "description": "Bad request if the data provided is invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message detailing what was wrong with the input",
+                        "example": "Missing required field 'ans1'"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        }
+      }
+    },
+    "/recommend_known_topic": {
+      "post": {
+        "summary": "Collect 2 answers for (known topic) and provide a recommendation",
+        "description": "This endpoint accepts two inputs from the user and provides topic-specific recommendations.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ans1": {
+                    "type": "string",
+                    "example": "Expertise level"
+                  },
+                  "ans2": {
+                    "type": "string",
+                    "example": "Available time per week"
+                  }
+                },
+                "required": ["ans1", "ans2"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Topic-specific recommendations based on the provided answers, including a text response and additional details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "description": "The recommendation text",
+                      "example": "Recommendation on Topic A"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time of the response",
+                      "example": "2024-04-24T12:31:55Z"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "generated_text": {
+                            "type": "string",
+                            "description": "Detailed recommendation",
+                            "example": "Detailed recommendation text"
+                          },
+                          "generated_token_count": {
+                            "type": "integer",
+                            "description": "The number of tokens in the recommendation",
+                            "example": 20
+                          },
+                          "input_token_count": {
+                            "type": "integer",
+                            "description": "The number of tokens in the input",
+                            "example": 10
+                          }
+                        }
+                      },
+                      "description": "Detailed results of the operation"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+              "description": "Bad request if the data provided is invalid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message detailing what was wrong with the input",
+                        "example": "Missing required field 'ans1'"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+        }
+      }
+    }
+  }
+}
